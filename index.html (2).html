@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hugo Jhonatan — Desenvolvedor Web</title>
+<meta name="description" content="Hugo Jhonatan — Desenvolvedor Web & Shopify. Criação de sites institucionais, landing pages, lojas virtuais e projetos Shopify.">
+<meta property="og:title" content="Hugo Jhonatan — Desenvolvedor Web & Shopify">
+<meta property="og:description" content="Criação de sites institucionais, landing pages, lojas virtuais e projetos Shopify.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#03050a;
+  --surface:#080d17;
+  --card:#0c1220;
+  --border:rgba(255,255,255,.06);
+  --border2:rgba(255,255,255,.12);
+  --text:#f0f4ff;
+  --muted:#6b7a99;
+  --accent:#6c63ff;
+  --accent2:#00d4ff;
+  --green:#00e5a0;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Epilogue',sans-serif;background:var(--black);color:var(--text);overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+#cursor{position:fixed;width:10px;height:10px;background:var(--accent2);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:screen}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(0,212,255,.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .1s,width .3s,height .3s,border-color .3s}
+body:hover #cursor{opacity:1}
+
+
+/* THREE.JS WAVE */
+#canvas3d{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.18}
+/* CANVAS PARTICLES */
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 6%;height:68px;
+  border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;
+  color:var(--text);letter-spacing:.05em;position:relative}
+.logo-dot{display:inline-block;width:6px;height:6px;background:var(--accent2);
+  border-radius:50%;margin-left:2px;vertical-align:middle;
+  box-shadow:0 0 8px var(--accent2);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-family:'Epilogue',sans-serif;font-size:.8rem;font-weight:500;
+  text-decoration:none;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;
+  transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;
+  background:var(--accent2);transition:width .3s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+
+/* HERO */
+.hero{position:relative;z-index:1;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:100px 6% 60px;overflow:hidden}
+
+.hero-label{font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent2);margin-bottom:2rem;display:flex;align-items:center;gap:10px;
+  opacity:0;animation:fadeUp .8s .2s forwards}
+.hero-label::before{content:'';width:32px;height:1px;background:var(--accent2)}
+
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(3.5rem,8vw,7rem);line-height:.95;letter-spacing:-.03em;
+  margin-bottom:2rem;
+  opacity:0;animation:fadeUp .8s .4s forwards}
+.hero-title em{font-style:normal;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-title .outline{
+  -webkit-text-stroke:1px rgba(255,255,255,.2);
+  -webkit-text-fill-color:transparent}
+
+.hero-sub{font-size:1.1rem;color:var(--muted);line-height:1.7;
+  max-width:480px;margin-bottom:3rem;font-weight:300;
+  opacity:0;animation:fadeUp .8s .6s forwards}
+.hero-sub strong{color:var(--text);font-weight:500}
+
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;
+  opacity:0;animation:fadeUp .8s .8s forwards}
+.btn-main{display:inline-flex;align-items:center;gap:10px;
+  padding:14px 32px;border-radius:4px;
+  background:var(--accent2);color:#000;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;
+  letter-spacing:.05em;text-transform:uppercase;text-decoration:none;
+  transition:transform .2s,box-shadow .2s}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,212,255,.3)}
+.btn-main svg{width:16px;height:16px;transition:transform .2s}
+.btn-main:hover svg{transform:translateX(4px)}
+.btn-sec{display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;border-radius:4px;
+  border:1px solid var(--border2);color:var(--muted);
+  font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;
+  text-decoration:none;transition:all .2s}
+.btn-sec:hover{border-color:var(--accent2);color:var(--text)}
+
+.hero-stats{display:flex;gap:0;margin-top:5rem;border-top:1px solid var(--border);
+  opacity:0;animation:fadeUp .8s 1s forwards}
+.stat{flex:1;padding:2rem 0 0;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Syne',sans-serif;font-size:2.8rem;font-weight:800;
+  color:var(--text);letter-spacing:-.03em;line-height:1}
+.stat-label{font-size:.72rem;color:var(--muted);margin-top:.4rem;
+  text-transform:uppercase;letter-spacing:.1em}
+
+/* SCROLL LINE */
+.scroll-hint{position:absolute;bottom:2.5rem;left:6%;
+  display:flex;align-items:center;gap:10px;
+  font-size:.7rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;
+  opacity:0;animation:fadeUp .8s 1.2s forwards}
+.scroll-line{width:40px;height:1px;background:var(--muted);
+  transform-origin:left;animation:scrollAnim 2s ease-in-out infinite}
+@keyframes scrollAnim{0%,100%{transform:scaleX(1);opacity:.5}50%{transform:scaleX(.4);opacity:1}}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* DIVIDER */
+.divline{border:none;border-top:1px solid var(--border);margin:0 6%}
+
+/* SECTION */
+.sec{position:relative;z-index:1;padding:80px 6%}
+.sec-header{display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+.sec-eyebrow{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent2);margin-bottom:.6rem}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:800;letter-spacing:-.03em;line-height:1}
+.sec-count{font-family:'Syne',sans-serif;font-size:5rem;font-weight:800;
+  color:rgba(255,255,255,.04);line-height:1;user-select:none}
+
+/* TABS */
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.tab{padding:7px 18px;border-radius:2px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);font-size:.72rem;
+  font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;font-family:'Epilogue',sans-serif;transition:all .2s}
+.tab:hover{border-color:var(--border2);color:var(--text)}
+.tab.active{background:var(--accent2);border-color:var(--accent2);color:#000;font-weight:700}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border);border:1px solid var(--border)}
+
+/* CARD */
+.card{background:var(--card);display:flex;flex-direction:column;
+  transition:background .25s;position:relative;overflow:hidden;cursor:pointer}
+.card:hover{background:#111827}
+.card::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(108,99,255,.06),transparent);
+  opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover::after{opacity:1}
+
+/* PREVIEW */
+.preview{height:200px;background:#070c16;position:relative;overflow:hidden}
+.preview img{width:100%;height:100%;object-fit:cover;object-position:top;
+  display:block;opacity:0;transition:opacity .5s ease,transform .4s ease}
+.preview img.loaded{opacity:1}
+.card:hover .preview img{transform:scale(1.04)}
+.preview .fallback{position:absolute;inset:0;display:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.preview .fallback span{font-family:'Syne',sans-serif;font-size:.78rem;
+  font-weight:700;text-align:center;padding:0 1rem;letter-spacing:.05em}
+.preview-overlay{position:absolute;bottom:0;left:0;right:0;height:80px;z-index:2;
+  background:linear-gradient(to bottom,transparent,var(--card))}
+.card:hover .preview-overlay{background:linear-gradient(to bottom,transparent,#111827)}
+
+/* SKELETON */
+.preview::before{content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.03),transparent);
+  background-size:200% 100%;animation:skel 1.8s infinite}
+.preview.done::before{display:none}
+@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* CARD BODY */
+.card-body{padding:1.4rem;flex:1;display:flex;flex-direction:column;gap:.5rem;position:relative;z-index:3}
+.card-cat{font-size:.62rem;font-weight:600;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--accent)}
+.card-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;
+  color:var(--text);letter-spacing:-.01em}
+.card-desc{font-size:.78rem;color:var(--muted);line-height:1.6;font-weight:300}
+.card-footer{display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;padding-top:.9rem;border-top:1px solid var(--border)}
+.tags{display:flex;gap:.3rem;flex-wrap:wrap}
+.tag{font-size:.6rem;padding:2px 8px;
+  border:1px solid var(--border);color:var(--muted);letter-spacing:.05em}
+.clink{display:flex;align-items:center;gap:4px;font-size:.72rem;
+  color:var(--accent2);text-decoration:none;white-space:nowrap;
+  font-weight:500;letter-spacing:.05em;text-transform:uppercase;transition:gap .2s,color .2s}
+.clink:hover{gap:8px;color:var(--text)}
+.clink svg{width:12px;height:12px}
+.card.hidden{display:none!important}
+
+/* CONTACT */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--border);border:1px solid var(--border)}
+.ccard{background:var(--card);padding:2rem;
+  display:flex;align-items:center;gap:1.25rem;
+  text-decoration:none;transition:background .2s;position:relative;overflow:hidden}
+.ccard:hover{background:#111827}
+.ccard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--accent2);transform:scaleY(0);transform-origin:bottom;
+  transition:transform .3s}
+.ccard:hover::before{transform:scaleY(1)}
+.cicon{width:44px;height:44px;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cicon svg{width:20px;height:20px}
+.cinfo{flex:1}
+.cplatform{font-size:.62rem;color:var(--muted);margin-bottom:3px;
+  letter-spacing:.1em;text-transform:uppercase}
+.cvalue{font-size:.9rem;font-weight:500;color:var(--text);font-family:'Syne',sans-serif}
+.carr{font-size:.8rem;color:var(--muted);transition:color .2s,transform .2s;display:block}
+.ccard:hover .carr{color:var(--accent2);transform:translate(3px,-3px)}
+
+/* FOOTER */
+footer{position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:2rem 6%;border-top:1px solid var(--border);
+  font-size:.72rem;color:var(--muted);letter-spacing:.05em}
+.footer-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;color:var(--text)}
+
+/* WHATSAPP */
+.wbtn{position:fixed;bottom:32px;right:32px;z-index:999;
+  width:54px;height:54px;background:#25d366;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 4px 20px rgba(37,211,102,.35);
+  animation:wfloat 3s ease-in-out infinite}
+.wbtn:hover{transform:scale(1.12);animation-play-state:paused}
+.wbtn svg{width:26px;height:26px}
+@keyframes wfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .hero-title{font-size:clamp(3rem,7vw,5.5rem)}
+}
+@media(max-width:768px){
+  nav{padding:0 4%}.nav-links{gap:1.5rem}
+  .hero{padding:90px 4% 50px}
+  .hero-stats{flex-wrap:wrap}
+  .stat{min-width:calc(50% - 1px);padding:1.5rem 0 0}
+  .sec{padding:60px 4%}
+  .grid{grid-template-columns:1fr}
+  .contact-wrap{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:.75rem;text-align:center}
+  .divline{margin:0 4%}
+}
+@media(max-width:480px){
+  nav{padding:0 1.25rem}
+  .hero{padding:80px 1.25rem 50px}
+  .hero-title{font-size:clamp(2.4rem,10vw,3.5rem)}
+  .hero-ctas{flex-direction:column}
+  .btn-main,.btn-sec{text-align:center;justify-content:center}
+  .sec{padding:50px 1.25rem}
+  .hero-stats{gap:0}
+  .stat{min-width:50%}
+  .stat-num{font-size:2.2rem}
+  .wbtn{bottom:20px;right:20px;width:48px;height:48px}
+  .wbtn svg{width:22px;height:22px}
+}
+@media(hover:none),(pointer:coarse){body{cursor:auto}#cursor,#cursor-ring{display:none}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+<canvas id="canvas3d"></canvas>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="logo">jhs<span class="logo-dot"></span>dev</div>
+  <ul class="nav-links">
+    <li><a href="#projetos">Projetos</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-label">Desenvolvedor Web & Shopify</div>
+  <h1 class="hero-title">
+    Hugo<br>
+    <em>Jhonatan</em><br>
+    <span class="outline">Dev</span>
+  </h1>
+  <p class="hero-sub">
+    Acha que tecnologia é complicada demais para você ou sua empresa?<br>
+    <strong>Eu resolvo o seu problema.</strong>
+  </p>
+  <div class="hero-ctas">
+    <a href="https://wa.me/5547999487019" target="_blank" rel="noopener noreferrer" class="btn-main">
+      Falar no WhatsApp
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="#projetos" class="btn-sec">Ver Projetos</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num" data-target="13" data-suffix="+">0</div>
+      <div class="stat-label">Projetos Entregues</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="4" data-suffix="">0</div>
+      <div class="stat-label">Especialidades</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" data-target="100" data-suffix="%">0</div>
+      <div class="stat-label">Dedicação</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span class="scroll-line"></span>
+    Scroll
+  </div>
+</section>
+
+<hr class="divline">
+
+<!-- PROJETOS -->
+<section class="sec" id="projetos">
+  <div class="sec-header">
+    <div>
+      <div class="sec-eyebrow">Portfólio</div>
+      <div class="sec-title">Projetos<br>Desenvolvidos</div>
+    </div>
+    <div class="sec-count">13</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="filter('todos',this)">Todos</button>
+    <button class="tab" onclick="filter('institucional',this)">Institucional</button>
+    <button class="tab" onclick="filter('landing',this)">Landing Page</button>
+    <button class="tab" onclick="filter('loja',this)">Loja Virtual</button>
+    <button class="tab" onclick="filter('shopify',this)">Shopify</button>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <a href="https://www.lwtecnologia.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="institucional" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p0">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://www.lwtecnologia.com.br/" alt="LW Tecnologia" onload="ok(this,'p0')" onerror="err(this,'p0','#0a1628','#60a5fa','LW Tecnologia')">
+        <div class="fallback" id="f0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#60a5fa">LW Tecnologia</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Institucional</span>
+        <div class="card-name">LW Tecnologia</div>
+        <p class="card-desc">Site institucional para empresa de tecnologia com apresentação de serviços e soluções corporativas.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://www.primeac.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="institucional" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p1">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://www.primeac.com.br/" alt="Prime AC" onload="ok(this,'p1')" onerror="err(this,'p1','#0a1628','#60a5fa','Prime AC')">
+        <div class="fallback" id="f1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#60a5fa">Prime AC</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Institucional</span>
+        <div class="card-name">Prime AC</div>
+        <p class="card-desc">Site institucional para empresa de ar-condicionado com catálogo de serviços e área de contato.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://agencia-de-viagem-lovat.vercel.app/new-page" target="_blank" rel="noopener noreferrer" class="card" data-cat="institucional" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p2">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://agencia-de-viagem-lovat.vercel.app/new-page" alt="Agência de Viagem" onload="ok(this,'p2')" onerror="err(this,'p2','#0a1628','#60a5fa','Agência de Viagem')">
+        <div class="fallback" id="f2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#60a5fa">Agência de Viagem</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Institucional</span>
+        <div class="card-name">Agência de Viagem</div>
+        <p class="card-desc">Site para agência de viagens com destinos, pacotes e formulário de orçamento.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://www.otimizare.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="landing" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p3">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://www.otimizare.com.br/" alt="Otimizare" onload="ok(this,'p3')" onerror="err(this,'p3','#150d2e','#a78bfa','Otimizare')">
+        <div class="fallback" id="f3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#a78bfa">Otimizare</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Landing Page</span>
+        <div class="card-name">Otimizare</div>
+        <p class="card-desc">Landing page de alta conversão para serviços de otimização e marketing digital.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://vsl.kettysatofit.com/" target="_blank" rel="noopener noreferrer" class="card" data-cat="landing" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p4">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://vsl.kettysatofit.com/" alt="Ketty Sato Fit" onload="ok(this,'p4')" onerror="err(this,'p4','#150d2e','#a78bfa','Ketty Sato Fit')">
+        <div class="fallback" id="f4"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#a78bfa">Ketty Sato Fit</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Landing Page</span>
+        <div class="card-name">Ketty Sato Fit</div>
+        <p class="card-desc">VSL — vídeo de vendas com página de conversão para programa de fitness e bem-estar.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://clark-nu.vercel.app/" target="_blank" rel="noopener noreferrer" class="card" data-cat="landing" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p5">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://clark-nu.vercel.app/" alt="Clark" onload="ok(this,'p5')" onerror="err(this,'p5','#150d2e','#a78bfa','Clark')">
+        <div class="fallback" id="f5"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#a78bfa">Clark</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Landing Page</span>
+        <div class="card-name">Clark</div>
+        <p class="card-desc">Landing page moderna com foco em apresentação de produto e captação de leads.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://imuno-pump.vercel.app/" target="_blank" rel="noopener noreferrer" class="card" data-cat="loja" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p6">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://imuno-pump.vercel.app/" alt="Imuno Pump" onload="ok(this,'p6')" onerror="err(this,'p6','#071a12','#00e5a0','Imuno Pump')">
+        <div class="fallback" id="f6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#00e5a0">Imuno Pump</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Loja Virtual</span>
+        <div class="card-name">Imuno Pump</div>
+        <p class="card-desc">E-commerce de suplementos com catálogo, carrinho e checkout integrado.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://www.livny.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="loja" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p7">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://www.livny.com.br/" alt="Livny" onload="ok(this,'p7')" onerror="err(this,'p7','#071a12','#00e5a0','Livny')">
+        <div class="fallback" id="f7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#00e5a0">Livny</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Loja Virtual</span>
+        <div class="card-name">Livny</div>
+        <p class="card-desc">Loja virtual com catálogo, filtros de produtos e experiência de compra otimizada.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://6ixcompany.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="loja" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p8">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://6ixcompany.com.br/" alt="6ix Company" onload="ok(this,'p8')" onerror="err(this,'p8','#071a12','#00e5a0','6ix Company')">
+        <div class="fallback" id="f8"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#00e5a0">6ix Company</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Loja Virtual</span>
+        <div class="card-name">6ix Company</div>
+        <p class="card-desc">E-commerce de moda com identidade forte, galeria de produtos e integração de pagamentos.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://armazemdoschinelos.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="shopify" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p9">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://armazemdoschinelos.com.br/" alt="Armazém dos Chinelos" onload="ok(this,'p9')" onerror="err(this,'p9','#1a0a0a','#ff6b6b','Armazém dos Chinelos')">
+        <div class="fallback" id="f9"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#ff6b6b">Armazém dos Chinelos</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Shopify</span>
+        <div class="card-name">Armazém dos Chinelos</div>
+        <p class="card-desc">Loja Shopify especializada em calçados com tema customizado e experiência fluida.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">Shopify</span><span class="tag">Liquid</span><span class="tag">CSS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://gringa.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="shopify" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p10">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://gringa.com.br/" alt="Gringa" onload="ok(this,'p10')" onerror="err(this,'p10','#1a0a0a','#ff6b6b','Gringa')">
+        <div class="fallback" id="f10"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#ff6b6b">Gringa</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Shopify</span>
+        <div class="card-name">Gringa</div>
+        <p class="card-desc">E-commerce de moda feminina no Shopify com visual refinado e checkout otimizado.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">Shopify</span><span class="tag">Liquid</span><span class="tag">CSS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://amaro.com/" target="_blank" rel="noopener noreferrer" class="card" data-cat="shopify" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p11">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://amaro.com/" alt="Amaro" onload="ok(this,'p11')" onerror="err(this,'p11','#1a0a0a','#ff6b6b','Amaro')">
+        <div class="fallback" id="f11"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#ff6b6b">Amaro</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Shopify</span>
+        <div class="card-name">Amaro</div>
+        <p class="card-desc">Grande e-commerce de moda no Shopify com alto volume de produtos e UX de excelência.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">Shopify</span><span class="tag">Liquid</span><span class="tag">CSS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+    <a href="https://samsonite.com.br/" target="_blank" rel="noopener noreferrer" class="card" data-cat="shopify" style="text-decoration:none;color:inherit;">
+      <div class="preview" id="p12">
+        <img loading="lazy" src="https://image.thum.io/get/width/640/crop/400/https://samsonite.com.br/" alt="Samsonite Brasil" onload="ok(this,'p12')" onerror="err(this,'p12','#1a0a0a','#ff6b6b','Samsonite Brasil')">
+        <div class="fallback" id="f12"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span style="color:#ff6b6b">Samsonite Brasil</span></div>
+        <div class="preview-overlay"></div>
+      </div>
+      <div class="card-body">
+        <span class="card-cat">Shopify</span>
+        <div class="card-name">Samsonite Brasil</div>
+        <p class="card-desc">Loja oficial Samsonite no Brasil com identidade global da marca e catálogo completo.</p>
+        <div class="card-footer">
+          <div class="tags"><span class="tag">Shopify</span><span class="tag">Liquid</span><span class="tag">CSS</span></div>
+          
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<hr class="divline">
+
+<!-- CONTATO -->
+<section class="sec" id="contato">
+  <div class="sec-header">
+    <div>
+      <div class="sec-eyebrow">Contato</div>
+      <div class="sec-title">Vamos<br>conversar?</div>
+    </div>
+  </div>
+  <div class="contact-wrap">
+    <a href="mailto:hugojhonatan.dev@gmail.com" class="ccard">
+      <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg></div>
+      <div class="cinfo"><div class="cplatform">E-mail</div><div class="cvalue">hugojhonatan.dev@gmail.com</div></div>
+      <span class="carr">↗</span>
+    </a>
+    <a href="https://wa.me/5547999487019" target="_blank" rel="noopener noreferrer" class="ccard">
+      <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="#00e5a0" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+      <div class="cinfo"><div class="cplatform">WhatsApp</div><div class="cvalue">+55 (47) 99948-7019</div></div>
+      <span class="carr">↗</span>
+    </a>
+    <a href="https://www.instagram.com/hu_ghoo/" target="_blank" rel="noopener noreferrer" class="ccard">
+      <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+      <div class="cinfo"><div class="cplatform">Instagram</div><div class="cvalue">@hu_ghoo</div></div>
+      <span class="carr">↗</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">jhs.dev</span>
+  <span>© 2025 Hugo Jhonatan · Todos os direitos reservados</span>
+</footer>
+
+<!-- WHATSAPP FLUTUANTE -->
+<a href="https://wa.me/5547999487019" target="_blank" rel="noopener noreferrer" class="wbtn" title="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.123 1.532 5.855L.06 23.054a.75.75 0 00.906.906l5.199-1.472A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.660-.524-5.174-1.437l-.372-.22-3.847 1.09 1.09-3.847-.22-.372A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</a>
+
+<script>
+// CURSOR
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
+animRing();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px';cur.style.background='var(--accent)';ring.style.width='52px';ring.style.height='52px'});
+  el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px';cur.style.background='var(--accent2)';ring.style.width='36px';ring.style.height='36px'});
+});
+
+// PARTICLES
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+resize();window.addEventListener('resize',resize);
+function Pt(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*1.2+.3}
+for(let i=0;i<80;i++)pts.push(new Pt());
+function drawPts(){
+  ctx.clearRect(0,0,W,H);
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>W)p.vx*=-1;
+    if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(108,99,255,.5)';ctx.fill();
+  });
+  pts.forEach((a,i)=>{pts.slice(i+1).forEach(b=>{
+    const d=Math.hypot(a.x-b.x,a.y-b.y);
+    if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=`rgba(0,212,255,${(1-d/120)*.15})`;ctx.lineWidth=.5;ctx.stroke()}
+  })});
+  requestAnimationFrame(drawPts);
+}
+drawPts();
+
+// COUNTERS
+function animCount(el){
+  const t=+el.dataset.target,s=el.dataset.suffix||'';
+  let c=0;const step=t/60;
+  const i=setInterval(()=>{c+=step;if(c>=t){c=t;clearInterval(i)}el.textContent=Math.floor(c)+s},16);
+}
+const cobs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animCount(e.target);cobs.unobserve(e.target)}})},{threshold:.5});
+document.querySelectorAll('.stat-num[data-target]').forEach(c=>cobs.observe(c));
+
+// IMAGE HANDLERS
+function ok(img,pid){img.classList.add('loaded');document.getElementById(pid).classList.add('done')}
+function err(img,pid,bg,color,name){
+  img.style.display='none';
+  const n=pid.replace('p','');
+  const f=document.getElementById('f'+n);
+  if(f){f.style.display='flex';f.style.background=bg}
+  document.getElementById(pid).classList.add('done');
+}
+// FILTER
+function filter(cat,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(card=>{
+    if(cat==='todos'||card.dataset.cat===cat){card.classList.remove('hidden')}
+    else{card.classList.add('hidden')}
+  });
+}
+
+// THREE.JS WAVE DOTS
+(function(){
+  if(typeof THREE === 'undefined') return;
+  const SEPARATION=150,AMOUNTX=40,AMOUNTY=60;
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,1,10000);
+  camera.position.set(0,355,1220);
+  const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas3d'),alpha:true,antialias:true});
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth,window.innerHeight);
+  renderer.setClearColor(0x000000,0);
+  const positions=[];
+  for(let ix=0;ix<AMOUNTX;ix++){
+    for(let iy=0;iy<AMOUNTY;iy++){
+      positions.push(ix*SEPARATION-(AMOUNTX*SEPARATION)/2,0,iy*SEPARATION-(AMOUNTY*SEPARATION)/2);
+    }
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+  const material=new THREE.PointsMaterial({size:7,color:0x6c63ff,transparent:true,opacity:0.5,sizeAttenuation:true});
+  scene.add(new THREE.Points(geometry,material));
+  let count=0;
+  function animateThree(){
+    requestAnimationFrame(animateThree);
+    const pos=geometry.attributes.position.array;
+    let i=0;
+    for(let ix=0;ix<AMOUNTX;ix++){
+      for(let iy=0;iy<AMOUNTY;iy++){pos[i*3+1]=Math.sin((ix+count)*0.3)*50+Math.sin((iy+count)*0.5)*50;i++;}
+    }
+    geometry.attributes.position.needsUpdate=true;
+    renderer.render(scene,camera);
+    count+=0.07;
+  }
+  animateThree();
+  window.addEventListener('resize',()=>{
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  });
+})();
+</script>
+</body>
+</html>
