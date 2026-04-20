@@ -1,0 +1,20 @@
+{
+  "name": "hugo-jhonatan-portfolio",
+  "version": "1.0.0",
+  "description": "Hugo Jhonatan - Desenvolvedor Web Portfolio",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "portfolio",
+    "web-developer"
+  ],
+  "author": "Hugo Jhonatan",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.14"
+  }
+}
